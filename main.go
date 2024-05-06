@@ -2,27 +2,26 @@ package main
 
 import "fmt"
 
-
 func addTen(a int) int {
-  return a + 10;
+	return a + 10
 }
 
 func multiplyTwo(a int) int {
-  return a * 2;
+	return a * 2
 }
 
-func main(){
+func main() {
 
-  num := 10;
+	num := 10
 
-  fmt.Println(num); //println(num);
+	fmt.Println(num) //println(num);
 
-  var pipeline = [...](func(int)int){addTen, multiplyTwo, multiplyTwo};
+	var pipeline = [...](func(int) int){addTen, multiplyTwo, multiplyTwo, multiplyTwo, addTen, multiplyTwo}
 
-  for index, el := range pipeline{
-    fmt.Println("Executing ", index)
-    num = el(num);
-  }
+	for index, el := range pipeline {
+		fmt.Println("Executing ", index)
+		num = el(num)
+	}
 
-  fmt.Println(num);
+	fmt.Println(num)
 }
