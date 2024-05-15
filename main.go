@@ -1,27 +1,31 @@
 package main
 
-import "fmt"
+import (
+	"flag"
+	"os"
+	"viewrun/cmd"
+)
 
-func addTen(a int) int {
-	return a + 10
-}
+var (
+  pipeline string
+  filePath string
+)
 
-func multiplyTwo(a int) int {
-	return a * 2
-}
+func main(){
 
-func main() {
+  pwd, err := os.Getwd()
 
-	num := 10
+  if err != nil{
+    panic( err)
+  }
 
-	fmt.Println(num) //println(num);
+  defaultPipeline := pwd + "/.viewrun"
 
-	var pipeline = [...](func(int) int){addTen, multiplyTwo, multiplyTwo, multiplyTwo, addTen, multiplyTwo}
+  flag.StringVar(&pipeline, "pipeline", "", "Pipeline name to run")
+  flag.StringVar(&filePath, "file", defaultPipeline, "Pipeline config file")
+  flag.Parse()
 
-	for index, el := range pipeline {
-		fmt.Println("Executing ", index)
-		num = el(num)
-	}
+  
 
-	fmt.Println(num)
+  app.App(pipeline, filePath)
 }
