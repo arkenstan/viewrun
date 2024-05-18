@@ -6,8 +6,6 @@ import (
 
 func App(pipeline string, filePath string){
 
-
-
   fmt.Println("Running pipeline:", pipeline, "\n\nFile Path:", filePath)
 
 }

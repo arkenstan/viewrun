@@ -1,0 +1,35 @@
+{
+  "pipelines": {
+    "copyArtifacts": [
+      {
+        "task": "SRC",
+        "sources": "./temp/**/*"
+      },
+      {
+        "task": "DEST",
+        "target": "./dist/"
+      }
+    ],
+    "copyZipArtifacts": [
+      {
+        "task": "SRC",
+        "sources": "./src/output/**/*"
+      },
+      {
+        "task": "DEST",
+        "target": "./currentCopy/"
+      },
+      {
+        "task": "ZIP",
+        "output": "build-{{ date | format:'' }}",
+        "options": {
+          "noExtensions": "false"
+        }
+      },
+      {
+        "task": "DEST",
+        "target": "./dist/"
+      }
+    ]
+  }
+}
