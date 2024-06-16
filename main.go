@@ -7,25 +7,23 @@ import (
 )
 
 var (
-  pipeline string
-  filePath string
+	pipeline string
+	filePath string
 )
 
-func main(){
+func main() {
 
-  pwd, err := os.Getwd()
+	pwd, err := os.Getwd()
 
-  if err != nil{
-    panic( err)
-  }
+	if err != nil {
+		panic(err)
+	}
 
-  defaultPipeline := pwd + "/.viewrun"
+	defaultPipeline := pwd + "/.viewrun"
 
-  flag.StringVar(&pipeline, "pipeline", "", "Pipeline name to run")
-  flag.StringVar(&filePath, "file", defaultPipeline, "Pipeline config file")
-  flag.Parse()
+	flag.StringVar(&pipeline, "pipeline", "", "Pipeline name to run")
+	flag.StringVar(&filePath, "file", defaultPipeline, "Pipeline config file")
+	flag.Parse()
 
-  
-
-  app.App(pipeline, filePath)
+	app.App(pipeline, filePath)
 }

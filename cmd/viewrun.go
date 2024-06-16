@@ -2,10 +2,12 @@ package app
 
 import (
 	"fmt"
+	"viewrun/internal/pipeline"
 )
 
-func App(pipeline string, filePath string){
+func App(pipelineName string, filePath string) {
 
-  fmt.Println("Running pipeline:", pipeline, "\n\nFile Path:", filePath)
+	fmt.Println("Running pipeline:", pipelineName, "\n\nFile Path:", filePath)
 
+	pipeline := main.PipelineConfig{}
 }
