@@ -6,8 +6,14 @@ import (
 )
 
 func App(pipelineName string, filePath string) {
-
 	fmt.Println("Running pipeline:", pipelineName, "\n\nFile Path:", filePath)
+	pipelineConfig, err := pipeline.LoadPipeline(filePath)
 
-	pipeline := main.PipelineConfig{}
+	if err != nil {
+		fmt.Println("Unable to parse pipeline")
+		return
+	}
+
+	fmt.Println("PIPELINE CONFIG: ", pipelineConfig)
+
 }

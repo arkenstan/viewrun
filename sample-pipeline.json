@@ -3,7 +3,7 @@
     "copyArtifacts": [
       {
         "task": "SRC",
-        "sources": "./src/output/**/*"
+        "sources": ["./src/output/**/*"]
       },
       {
         "task": "DEST",
@@ -13,11 +13,7 @@
     "copyZipArtifacts": [
       {
         "task": "SRC",
-        "sources": "./src/output/**/*"
-      },
-      {
-        "task": "DEST",
-        "target": "./currentCopy/"
+        "sources": ["./src/output/**/*"]
       },
       {
         "task": "ZIP",

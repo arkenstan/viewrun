@@ -1,4 +1,6 @@
-# TRANSACTION { name: "copyArtifacts" }
+TRANSACTIONS
+
+# TRASACTION { name: "copyArtifacts" }
 SELECT [**/*.js] FROM "./src/output";
 COPYTO "./dist";
 # END TRANSACTION

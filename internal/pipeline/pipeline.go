@@ -1,8 +1,8 @@
 package pipeline
 
 import (
-	"encoding/json"
-	"io"
+	"bufio"
+	"fmt"
 	"os"
 )
 
@@ -21,18 +21,37 @@ func (p PipelineConfig) GetPipeline(name string) []Task {
 	return p.Pipelines[name]
 }
 
-func loadPipeline(filePath string) (*PipelineConfig, error) {
-	fileData, err := os.Open(filePath)
+func LoadPipeline(filePath string) (*PipelineConfig, error) {
+	// fileData, err := os.Open(filePath)
+
+	// if err != nil {
+	// 	return nil, err
+	// }
+
+	// fileBytes, _ := io.ReadAll(fileData)
+
+	// var pipelineConfig PipelineConfig
+
+	// _ = json.Unmarshal(fileBytes, &pipelineConfig)
+
+	file, err := os.Open(filePath)
 
 	if err != nil {
 		return nil, err
 	}
 
-	fileBytes, _ := io.ReadAll(fileData)
+	defer file.Close()
 
-	var pipelineConfig PipelineConfig
+	scanner := bufio.NewScanner(file)
 
-	_ = json.Unmarshal(fileBytes, &pipelineConfig)
+	for scanner.Scan() {
+		fmt.Println("SCANNER | ", scanner.Text())
+	}
 
-	return &pipelineConfig, nil
+	if err := scanner.Err(); err != nil {
+		fmt.Println(err)
+	}
+
+	return nil, nil
+
 }
