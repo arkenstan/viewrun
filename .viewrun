@@ -1,15 +1,15 @@
-# TRANSACTION { name: "copyArtifacts" }
-SELECT [**/*.js] FROM "./src/output";
-COPYTO "./dist";
+SELECT [**/*.js] FROM "./src/output"
+COPYTO "./dist "
 # END TRANSACTION
 
-# TRANSACTION { name: "copyZipArtifacts" }
-RUN ["npm", "run", "build"];
-VAR version FROM ENV AS version;
-VAR num 10;
-SELECT ["**/*"] FROM "./src/targets";
-ZIP "bundle-%DATETIME%.zip";
-COPYTO "./dist/build-%DATETIME%-%ENV:version%.something";
-# END TRANSACTION
+RUN ["npm", "run", "build"]
+VAR   version FROM ENV AS version
+VAR num 10
+SELECT ["**/*"] FROM "./src/targets"
+ZIP "bundle-%DATETIME%.zip"
+COPYTO "./dist/build-%DATETIME%-%ENV:version%.something"
 
-RUNSCRIPT
+RUN apt update && \
+  apt upgrade
+
+RUNSCRIPT ./hello
