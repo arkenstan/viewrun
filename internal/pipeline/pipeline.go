@@ -52,45 +52,70 @@ func LoadPipeline(filePath string) (*PipelineConfig, error) {
 
 	multiLine := false
 
+	inString := false
+
+	operatorStack := []string{}
+	commandString := ""
+
 	for scanner.Scan() {
 
 		switch scanner.Text() {
 
 		case "\n":
-			directive = append(directive, currentBuffer)
-			currentBuffer = ""
-			if !multiLine && len(directive) > 1 {
-				directives = append(directives, directive)
-				directive = nil
-			}
-
-		case " ", "\t":
-			if currentBuffer != "" {
-				fmt.Println("WORD | ", currentBuffer)
-				directive = append(directive, currentBuffer)
-				currentBuffer = ""
-			}
 
 		case "\\":
-			multiLine = true
+			operatorStack = append(operatorStack, "\\")
+
+		case "\"":
+			if operatorStack[len(operatorStack)-1] == "\\" {
+				operatorStack = operatorStack[:len(operatorStack)-1]
+			} else {
+				operatorStack = append(operatorStack, "\"")
+			}
+
+		// case "\n":
+		// 	directive = append(directive, currentBuffer)
+		// 	currentBuffer = ""
+		// 	if !multiLine && len(directive) > 1 {
+		// 		directives = append(directives, directive)
+		// 		directive = nil
+		// 	}
+
+		// case " ", "\t":
+		// 	if inString {
+		// 		currentBuffer += scanner.Text()
+		// 	} else if currentBuffer != "" && !inString {
+		// 		fmt.Println("WORD | ", currentBuffer)
+		// 		directive = append(directive, currentBuffer)
+		// 		currentBuffer = ""
+		// 	}
+
+		// case "\"":
+		// 	currentBuffer += "\""
+		// 	if inString {
+		// 		inString = false
+		// 		if currentBuffer != "" {
+		// 			directive = append(directive, currentBuffer)
+		// 			currentBuffer = ""
+		// 		}
+		// 	} else {
+		// 		inString = true
+		// 	}
+
+		// case "\\":
+		// 	multiLine = true
 
 		default:
 			currentBuffer += scanner.Text()
 			multiLine = false
-
 		}
 
 	}
 
 	for _, buff := range directives {
+		// ProcessDirective(buff)
 		fmt.Println("COMMAND", buff, len(buff))
 	}
-
-	// actualDirectives := []string{};
-
-	// for
-
-	// fmt.Println(knownBuffer)
 
 	if err := scanner.Err(); err != nil {
 		fmt.Println(err)

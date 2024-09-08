@@ -2,14 +2,15 @@ SELECT [**/*.js] FROM "./src/output"
 COPYTO "./dist "
 # END TRANSACTION
 
-RUN ["npm", "run", "build"]
-VAR   version FROM ENV AS version
+RUN "npm run build"
 VAR num 10
+
+
 SELECT ["**/*"] FROM "./src/targets"
 ZIP "bundle-%DATETIME%.zip"
-COPYTO "./dist/build-%DATETIME%-%ENV:version%.something"
+COPYTO "./dist/build-%DATETIME%-%ENV:version%-%VAR:num%.something"
 
 RUN apt update && \
   apt upgrade
 
-RUNSCRIPT ./hello
+RUN "sh ./script %VAR:num%"
