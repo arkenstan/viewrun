@@ -1,5 +1,9 @@
 package pipeline
 
+import (
+	"viewrun/internal/ds"
+)
+
 type Directive struct {
 	keyword string
 	source  string
@@ -7,11 +11,49 @@ type Directive struct {
 	target  string
 }
 
-func ProcessDirective(command []string) {
+func ProcessDirective(command string) {
 
-	for _, literal := range command {
+	directive := Directive{}
 
-		println("PROCESSING", literal)
+	operatorStack := ds.Stack[rune]{}
+
+	for _, ch := range command {
+
+		topOperator := operatorStack.Top()
+
+		switch ch {
+
+		case '"':
+			if topOperator == '"' {
+				// String end
+			} else {
+				operatorStack = append(operatorStack, '"')
+			}
+
+		case '[':
+			if topOperator != '"' {
+				operatorStack = append(operatorStack)
+			} else {
+			}
+
+		case ' ', '\t':
+			if topOperator == '"' {
+				// In string
+			} else {
+
+			}
+
+		case '\\':
+			// Escape next character
+
+		case '#':
+			if topOperator != '"' {
+				break
+			}
+
+		default:
+
+		}
 
 	}
 

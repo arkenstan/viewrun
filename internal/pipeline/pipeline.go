@@ -44,34 +44,69 @@ func LoadPipeline(filePath string) (*PipelineConfig, error) {
 
 	scanner.Split(bufio.ScanRunes)
 
-	currentBuffer := ""
+	// currentBuffer := ""
 
-	directives := [][]string{}
+	// directives := [][]string{}
 
-	directive := []string{}
+	// directive := []string{}
 
-	multiLine := false
+	// multiLine := false
 
-	inString := false
+	// inString := false
 
 	operatorStack := []string{}
+
+	commands := []string{}
+
 	commandString := ""
 
 	for scanner.Scan() {
 
+		fmt.Println("opStack: ", operatorStack, scanner.Text())
+
 		switch scanner.Text() {
 
 		case "\n":
+			var topOperator string
+			if len(operatorStack) > 0 {
+				topOperator = operatorStack[len(operatorStack)-1]
+			}
+
+			fmt.Println("TOP OP:", topOperator)
+
+			if topOperator == "\\" {
+				operatorStack = operatorStack[:len(operatorStack)-1]
+			} else if topOperator == "\"" {
+				// Processing String
+			} else {
+				fmt.Println("COMMAND STRING: ", commandString)
+				commands = append(commands, commandString)
+				commandString = ""
+			}
 
 		case "\\":
 			operatorStack = append(operatorStack, "\\")
 
 		case "\"":
-			if operatorStack[len(operatorStack)-1] == "\\" {
-				operatorStack = operatorStack[:len(operatorStack)-1]
-			} else {
-				operatorStack = append(operatorStack, "\"")
+
+			var topOperator string
+			if len(operatorStack) > 0 {
+				topOperator = operatorStack[len(operatorStack)-1]
 			}
+
+			fmt.Println("TOP", topOperator)
+
+			if topOperator == "" {
+				operatorStack = append(operatorStack, "\"")
+			} else if topOperator == "\\" {
+				fmt.Println("HERE 2")
+				operatorStack = operatorStack[:len(operatorStack)-1]
+			} else if topOperator == "\"" {
+				fmt.Println("HERE 1")
+				operatorStack = operatorStack[:len(operatorStack)-1]
+			}
+
+			commandString += scanner.Text()
 
 		// case "\n":
 		// 	directive = append(directive, currentBuffer)
@@ -106,13 +141,17 @@ func LoadPipeline(filePath string) (*PipelineConfig, error) {
 		// 	multiLine = true
 
 		default:
-			currentBuffer += scanner.Text()
-			multiLine = false
+			fmt.Println("Command String:", commandString)
+			commandString += scanner.Text()
+			// currentBuffer += scanner.Text()
+			// multiLine = false
 		}
 
 	}
 
-	for _, buff := range directives {
+	fmt.Println(commands)
+
+	for _, buff := range commands {
 		// ProcessDirective(buff)
 		fmt.Println("COMMAND", buff, len(buff))
 	}
