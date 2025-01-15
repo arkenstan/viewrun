@@ -13,48 +13,59 @@ type Directive struct {
 
 func ProcessDirective(command string) {
 
-	directive := Directive{}
+	// directive := Directive{
+	// 	keyword: "",
+	// 	source:  "",
+	// 	pattern: []string{},
+	// 	target:  "",
+	// }
 
+	// operatorStack := ds.Stack[rune]{}
+
+	arrayStart := '['
+	arrayEnd := ']'
+
+	stringEnds := '"'
+
+	escapeChar := '\\'
+
+	words := []string{}
+
+	runeBuffer := ""
 	operatorStack := ds.Stack[rune]{}
+
+	var strings []string
 
 	for _, ch := range command {
 
-		topOperator := operatorStack.Top()
-
 		switch ch {
 
-		case '"':
-			if topOperator == '"' {
-				// String end
-			} else {
-				operatorStack = append(operatorStack, '"')
-			}
+		case stringEnds:
+			if operatorStack.Top() == escapeChar {
+				runeBuffer += string(ch)
 
-		case '[':
-			if topOperator != '"' {
-				operatorStack = append(operatorStack)
+			} else if operatorStack.Top() == stringEnds {
+				// pop operator
+				operatorStack.Pop()
+				if operatorStack.Top() == arrayStart {
+				}
+			} else if operatorStack.Top() == '\\' {
+				// Escape string
 			} else {
+				operatorStack.Push('"')
 			}
 
 		case ' ', '\t':
-			if topOperator == '"' {
-				// In string
-			} else {
-
-			}
-
-		case '\\':
-			// Escape next character
-
-		case '#':
-			if topOperator != '"' {
-				break
-			}
+			words = append(words, runeBuffer)
+			runeBuffer = ""
 
 		default:
+			runeBuffer += string(ch)
+			if operatorStack.Top() == escapeChar {
+				operatorStack.Pop()
+			}
 
 		}
-
 	}
 
 }

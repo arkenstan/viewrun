@@ -1,4 +1,4 @@
-SELECT [**/*.js] FROM "./src/output"
+SELECT ["**/*.js"] FROM "./src/output"
 COPYTO "./dist "
 # END TRANSACTION
 

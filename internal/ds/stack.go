@@ -10,7 +10,7 @@ func (s *Stack[T]) Push(a T) {
 	s.data = append(s.data, a)
 }
 
-func (s *Stack[T]) Pop(a T) error {
+func (s *Stack[T]) Pop() error {
 	if len(s.data) > 0 {
 		s.data = s.data[:len(s.data)-1]
 		return nil
